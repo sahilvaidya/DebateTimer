@@ -16,12 +16,15 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+
 public class HomeScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    TextView timer;
-    Button start;
     boolean active;
+    boolean created;
+    long totalmillis;
+    CountDownTimer time;
+    Button ConstructiveTimer, RebuttalTimer, CXTimer, AffTimer, NegTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,17 +33,11 @@ public class HomeScreen extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        timer = (TextView) findViewById(R.id.time);
-        start = (Button) findViewById(R.id.start);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        ConstructiveTimer = (Button) findViewById(R.id.ConstructiveTimer);
+        RebuttalTimer = (Button) findViewById(R.id.RebuttalTimer);
+        CXTimer = (Button) findViewById(R.id.CXTimer);
+        AffTimer = (Button) findViewById(R.id.AffTimer);
+        NegTimer = (Button) findViewById(R.id.NegTimer);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -52,31 +49,68 @@ public class HomeScreen extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         active = false;
-        final CountDownTimer time = new CountDownTimer(30000, 1000) {
+        created = false;
+        totalmillis = 480000;
 
-            public void onTick(long millisUntilFinished) {
-                timer.setText("seconds remaining: " + millisUntilFinished / 1000);
-            }
 
-            public void onFinish() {
-                timer.setText("done!");
-            }
-        };
 
-        start.setOnClickListener(new View.OnClickListener() {
+        ConstructiveTimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 if(!active){
-                    time.start();
+                    start(time);
                     active = true;
                 }
-                else{
+                else {
+                    pause();
                     active = false;
-                    time.cancel();
-                    timer.setText("Cancelled");
                 }
             }
         });
+        ConstructiveTimer.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v){
+                resetTimer();
+                return true;
+            }
+        });
+    }
+
+    public void pause(){
+        time.cancel();
+    }
+    public void start(CountDownTimer time){
+        time = new CountDownTimer(totalmillis,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                ConstructiveTimer.setText("" + (millisUntilFinished / 1000) / 60 + ":" + (millisUntilFinished / 1000) % 60);
+                totalmillis = millisUntilFinished;
+            }
+
+            @Override
+            public void onFinish() {
+                ConstructiveTimer.setText("done!");
+            }
+        };
+        time.start();
+    }
+    public void resetTimer(){
+        totalmillis = 480000;
+        time.cancel();
+        time = new CountDownTimer(totalmillis,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                ConstructiveTimer.setText("" + (millisUntilFinished / 1000) / 60 + ":" + (millisUntilFinished / 1000) % 60);
+                totalmillis = millisUntilFinished;
+            }
+
+            @Override
+            public void onFinish() {
+                ConstructiveTimer.setText("done!");
+            }
+        };
+        ConstructiveTimer.setText("Constructive");
+        active = false;
     }
 
     @Override
