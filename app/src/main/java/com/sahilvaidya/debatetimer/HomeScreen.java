@@ -1,5 +1,10 @@
 package com.sahilvaidya.debatetimer;
 
+/*Random Ideas
+Make the time flash
+ */
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
@@ -16,15 +21,17 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
-
 public class HomeScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    boolean active;
-    boolean created;
-    long totalmillis;
-    CountDownTimer time;
+    //
+//    boolean active;
+//    boolean created;
+//    long totalmillis;
+//    CountDownTimer time;
     Button ConstructiveTimer, RebuttalTimer, CXTimer, AffTimer, NegTimer;
+    countdown Constructive, Rebuttal, CX;
+    String afftime;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +45,11 @@ public class HomeScreen extends AppCompatActivity
         CXTimer = (Button) findViewById(R.id.CXTimer);
         AffTimer = (Button) findViewById(R.id.AffTimer);
         NegTimer = (Button) findViewById(R.id.NegTimer);
+        Constructive = new countdown(480000, ConstructiveTimer);
+        Rebuttal = new countdown(300000, RebuttalTimer);
+        CX = new countdown(180000,CXTimer);
+
+        afftime = "480000";
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -48,70 +60,73 @@ public class HomeScreen extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        active = false;
-        created = false;
-        totalmillis = 480000;
-
-
-
         ConstructiveTimer.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                if(!active){
-                    start(time);
-                    active = true;
-                }
-                else {
-                    pause();
-                    active = false;
+            public void onClick(View v) {
+                if (!Constructive.active) {
+                    Constructive.startTimer();
+                    Constructive.active = true;
+                } else {
+                    Constructive.pauseTimer();
+                    Constructive.active = false;
                 }
             }
         });
-        ConstructiveTimer.setOnLongClickListener(new View.OnLongClickListener(){
+        ConstructiveTimer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v){
-                resetTimer();
+            public boolean onLongClick(View v) {
+                Constructive.resetTimer();
                 return true;
             }
         });
+        RebuttalTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!Rebuttal.active) {
+                    Rebuttal.startTimer();
+                    Rebuttal.active = true;
+                } else {
+                    Rebuttal.pauseTimer();
+                    Rebuttal.active = false;
+                }
+            }
+        });
+        RebuttalTimer.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Rebuttal.resetTimer();
+                return true;
+            }
+        });
+        CXTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!CX.active) {
+                    CX.startTimer();
+                    CX.active = true;
+                } else {
+                    CX.pauseTimer();
+                    CX.active = false;
+                }
+            }
+        });
+        CXTimer.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                CX.resetTimer();
+                return true;
+            }
+        });
+        AffTimer.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(HomeScreen.this,AffPrep.class);
+                intent.putExtra("Time_Remaining",afftime);
+                startActivity(intent);
+            }
+        });
     }
 
-    public void pause(){
-        time.cancel();
-    }
-    public void start(CountDownTimer time){
-        time = new CountDownTimer(totalmillis,1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                ConstructiveTimer.setText("" + (millisUntilFinished / 1000) / 60 + ":" + (millisUntilFinished / 1000) % 60);
-                totalmillis = millisUntilFinished;
-            }
-
-            @Override
-            public void onFinish() {
-                ConstructiveTimer.setText("done!");
-            }
-        };
-        time.start();
-    }
-    public void resetTimer(){
-        totalmillis = 480000;
-        time.cancel();
-        time = new CountDownTimer(totalmillis,1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                ConstructiveTimer.setText("" + (millisUntilFinished / 1000) / 60 + ":" + (millisUntilFinished / 1000) % 60);
-                totalmillis = millisUntilFinished;
-            }
-
-            @Override
-            public void onFinish() {
-                ConstructiveTimer.setText("done!");
-            }
-        };
-        ConstructiveTimer.setText("Constructive");
-        active = false;
-    }
 
     @Override
     public void onBackPressed() {
