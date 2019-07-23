@@ -6,12 +6,13 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name = "AffPrep">Aff Prep</string>
-    <string name = "Constructive">Constructive</string>
-    <string name = "Rebuttal">Rebuttal</string>
-    <string name = "CX">CX</string>
-    <string name = "NegPrep">Neg Prep</string>
+    <string name="AffPrep">Aff Prep</string>
+    <string name="Constructive">Constructive</string>
+    <string name="Rebuttal">Rebuttal</string>
+    <string name="CX">CX</string>
+    <string name="NegPrep">Neg Prep</string>
 
-    <string name = "finish">TIME\'S UP</string>
+    <string name="finish">TIME\'S UP</string>
+    <string name="title_activity_constructive">Constructive</string>
 
 </resources>

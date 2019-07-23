@@ -50,9 +50,6 @@ public class HomeScreen extends AppCompatActivity
         NegTimer = (Button) findViewById(R.id.NegTimer);
         atl = (TextView) findViewById(R.id.afftimeleft);
         ntl = (TextView) findViewById(R.id.negtimeleft);
-//        Constructive = new countdown(480000, ConstructiveTimer);
-//        Rebuttal = new countdown(300000, RebuttalTimer);
-//        CX = new countdown(180000,CXTimer);
 
         afftime = "480000";
         affmilis = Long.parseLong(afftime);
@@ -71,63 +68,6 @@ public class HomeScreen extends AppCompatActivity
         atl.setText(printTime(affmilis));
         ntl.setText(printTime(negmilis));
 
-//        ConstructiveTimer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!Constructive.active) {
-//                    Constructive.startTimer();
-//                    Constructive.active = true;
-//                } else {
-//                    Constructive.pauseTimer();
-//                    Constructive.active = false;
-//                }
-//            }
-//        });
-//        ConstructiveTimer.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                Constructive.resetTimer();
-//                return true;
-//            }
-//        });
-//        RebuttalTimer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!Rebuttal.active) {
-//                    Rebuttal.startTimer();
-//                    Rebuttal.active = true;
-//                } else {
-//                    Rebuttal.pauseTimer();
-//                    Rebuttal.active = false;
-//                }
-//            }
-//        });
-//        RebuttalTimer.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                Rebuttal.resetTimer();
-//                return true;
-//            }
-//        });
-//        CXTimer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!CX.active) {
-//                    CX.startTimer();
-//                    CX.active = true;
-//                } else {
-//                    CX.pauseTimer();
-//                    CX.active = false;
-//                }
-//            }
-//        });
-//        CXTimer.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                CX.resetTimer();
-//                return true;
-//            }
-//        });
         AffTimer.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -144,6 +84,28 @@ public class HomeScreen extends AppCompatActivity
                 startActivityForResult(intent,2);
             }
         });
+        ConstructiveTimer.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(HomeScreen.this,Constructive.class);
+                startActivity(intent);
+            }
+        });
+        RebuttalTimer.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(HomeScreen.this,Rebuttal.class);
+                startActivity(intent);
+            }
+        });
+        CXTimer.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(HomeScreen.this,CX.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

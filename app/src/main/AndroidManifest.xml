@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sahilvaidya.debatetimer">
-    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -10,8 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AffPrep"></activity>
-        <activity android:name=".NegPrep"></activity>
+        <activity
+            android:name=".Constructive"
+            android:label="@string/title_activity_constructive"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".AffPrep" />
+        <activity android:name=".NegPrep" />
+        <activity android:name=".Rebuttal" />
+        <activity android:name=".CX" />
         <activity
             android:name=".HomeScreen"
             android:label="@string/app_name"

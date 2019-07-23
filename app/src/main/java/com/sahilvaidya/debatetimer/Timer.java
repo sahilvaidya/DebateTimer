@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public abstract class Prep extends AppCompatActivity {
+public abstract class Timer extends AppCompatActivity {
     Button butt;
     countdown cd;
     int time;
@@ -24,11 +24,11 @@ public abstract class Prep extends AppCompatActivity {
         setContentView(getLayoutResourceId());
 
         butt = (Button) findViewById(R.id.timer);
-        time = Integer.parseInt(getIntent().getStringExtra("Time_Remaining"));
         text = (EditText) findViewById(R.id.currenttime);
-        cd  = new countdown(time,butt,text,8);
+        cd = new countdown(time, butt, text, 8);
         clear = true;
         cd.setTime(time);
+
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +103,7 @@ public abstract class Prep extends AppCompatActivity {
         });
 
     }
+
 
     protected abstract int getLayoutResourceId();
 }
