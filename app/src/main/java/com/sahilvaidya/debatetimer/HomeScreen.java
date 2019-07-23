@@ -32,7 +32,7 @@ public class HomeScreen extends AppCompatActivity
     countdown Constructive, Rebuttal, CX;
     String afftime;
 
-
+    TextView atl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +45,13 @@ public class HomeScreen extends AppCompatActivity
         CXTimer = (Button) findViewById(R.id.CXTimer);
         AffTimer = (Button) findViewById(R.id.AffTimer);
         NegTimer = (Button) findViewById(R.id.NegTimer);
-        Constructive = new countdown(480000, ConstructiveTimer);
-        Rebuttal = new countdown(300000, RebuttalTimer);
-        CX = new countdown(180000,CXTimer);
+        atl = (TextView) findViewById(R.id.afftimeleft);
+//        Constructive = new countdown(480000, ConstructiveTimer);
+//        Rebuttal = new countdown(300000, RebuttalTimer);
+//        CX = new countdown(180000,CXTimer);
 
         afftime = "480000";
+        long affmilis = Long.parseLong(afftime);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -60,71 +62,80 @@ public class HomeScreen extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ConstructiveTimer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!Constructive.active) {
-                    Constructive.startTimer();
-                    Constructive.active = true;
-                } else {
-                    Constructive.pauseTimer();
-                    Constructive.active = false;
-                }
-            }
-        });
-        ConstructiveTimer.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Constructive.resetTimer();
-                return true;
-            }
-        });
-        RebuttalTimer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!Rebuttal.active) {
-                    Rebuttal.startTimer();
-                    Rebuttal.active = true;
-                } else {
-                    Rebuttal.pauseTimer();
-                    Rebuttal.active = false;
-                }
-            }
-        });
-        RebuttalTimer.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Rebuttal.resetTimer();
-                return true;
-            }
-        });
-        CXTimer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!CX.active) {
-                    CX.startTimer();
-                    CX.active = true;
-                } else {
-                    CX.pauseTimer();
-                    CX.active = false;
-                }
-            }
-        });
-        CXTimer.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                CX.resetTimer();
-                return true;
-            }
-        });
+//        ConstructiveTimer.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!Constructive.active) {
+//                    Constructive.startTimer();
+//                    Constructive.active = true;
+//                } else {
+//                    Constructive.pauseTimer();
+//                    Constructive.active = false;
+//                }
+//            }
+//        });
+//        ConstructiveTimer.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                Constructive.resetTimer();
+//                return true;
+//            }
+//        });
+//        RebuttalTimer.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!Rebuttal.active) {
+//                    Rebuttal.startTimer();
+//                    Rebuttal.active = true;
+//                } else {
+//                    Rebuttal.pauseTimer();
+//                    Rebuttal.active = false;
+//                }
+//            }
+//        });
+//        RebuttalTimer.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                Rebuttal.resetTimer();
+//                return true;
+//            }
+//        });
+//        CXTimer.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!CX.active) {
+//                    CX.startTimer();
+//                    CX.active = true;
+//                } else {
+//                    CX.pauseTimer();
+//                    CX.active = false;
+//                }
+//            }
+//        });
+//        CXTimer.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                CX.resetTimer();
+//                return true;
+//            }
+//        });
         AffTimer.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(HomeScreen.this,AffPrep.class);
                 intent.putExtra("Time_Remaining",afftime);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
         });
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                afftime = data.getStringExtra("Time_Remaining");
+            }
+        }
     }
 
 
@@ -175,4 +186,5 @@ public class HomeScreen extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
