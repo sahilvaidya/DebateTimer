@@ -31,8 +31,11 @@ public class HomeScreen extends AppCompatActivity
     Button ConstructiveTimer, RebuttalTimer, CXTimer, AffTimer, NegTimer;
     countdown Constructive, Rebuttal, CX;
     String afftime;
+    String negtime;
+    long affmilis;
+    long negmilis;
 
-    TextView atl;
+    TextView atl,ntl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,12 +49,16 @@ public class HomeScreen extends AppCompatActivity
         AffTimer = (Button) findViewById(R.id.AffTimer);
         NegTimer = (Button) findViewById(R.id.NegTimer);
         atl = (TextView) findViewById(R.id.afftimeleft);
+        ntl = (TextView) findViewById(R.id.negtimeleft);
 //        Constructive = new countdown(480000, ConstructiveTimer);
 //        Rebuttal = new countdown(300000, RebuttalTimer);
 //        CX = new countdown(180000,CXTimer);
 
         afftime = "480000";
-        long affmilis = Long.parseLong(afftime);
+        affmilis = Long.parseLong(afftime);
+
+        negtime = "480000";
+        negmilis = Long.parseLong(negtime);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -61,6 +68,8 @@ public class HomeScreen extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        atl.setText(printTime(affmilis));
+        ntl.setText(printTime(negmilis));
 
 //        ConstructiveTimer.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -127,6 +136,14 @@ public class HomeScreen extends AppCompatActivity
                 startActivityForResult(intent,1);
             }
         });
+        NegTimer.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(HomeScreen.this,NegPrep.class);
+                intent.putExtra("Time_Remaining",negtime);
+                startActivityForResult(intent,2);
+            }
+        });
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -134,6 +151,15 @@ public class HomeScreen extends AppCompatActivity
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 afftime = data.getStringExtra("Time_Remaining");
+                affmilis = Long.parseLong(afftime);
+                atl.setText(printTime(affmilis));
+            }
+        }
+        if (requestCode == 2) {
+            if(resultCode == RESULT_OK) {
+                negtime = data.getStringExtra("Time_Remaining");
+                negmilis = Long.parseLong(negtime);
+                ntl.setText(printTime(negmilis));
             }
         }
     }
@@ -185,6 +211,10 @@ public class HomeScreen extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public String printTime(long millis){
+        return "" + String.format("%02d",(millis / 60000)) + ":" + String.format("%02d",(millis / 1000) % 60);
     }
 
 }

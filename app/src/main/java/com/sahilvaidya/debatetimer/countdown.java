@@ -10,30 +10,30 @@ import android.widget.EditText;
 import java.text.DecimalFormat;
 
 public class countdown {
-    private long totalmillis;
     long remainingmillis;
     private Button butt;
     private CountDownTimer timer;
     boolean active;
     private String name;
     private EditText text;
+    int resettime;
 
-    protected countdown(long millis, Button b, EditText t){
-        totalmillis = millis;
+    protected countdown(long millis, Button b, EditText t, int reset){
         butt = b;
         remainingmillis = millis;
         name = butt.getText().toString();
         text = t;
-        text.setHint("" + String.format("%02d",getMins()) + ":" + String.format("%02d",getSecs()));
+        printHint(remainingmillis);
+        resettime = reset;
     }
 
     protected void startTimer(){
         timer = new CountDownTimer(remainingmillis, 500) {
             @Override
             public void onTick(long millisUntilFinished) {
-                text.setText("" + String.format("%02d",getMins()) + ":" + String.format("%02d",getSecs()));
+                printTime(remainingmillis);
                 remainingmillis = millisUntilFinished;
-                text.setHint("" + String.format("%02d",getMins()) + ":" + String.format("%02d",getSecs()));
+                printHint(remainingmillis);
             }
 
             @Override
@@ -54,13 +54,14 @@ public class countdown {
         if(timer != null) {
             timer.cancel();
         }
-        remainingmillis = totalmillis;
+        remainingmillis = (resettime * 60000);
+        printHint(remainingmillis);
         timer = new CountDownTimer(remainingmillis, 500) {
             @Override
             public void onTick(long millisUntilFinished) {
-                text.setText("" + String.format("%02d",getMins()) + ":" + String.format("%02d",getSecs()));
+                printTime(remainingmillis);
                 remainingmillis = millisUntilFinished;
-                text.setHint("" + getMins() + ":" + getSecs());
+                printHint(remainingmillis);
             }
 
             @Override
@@ -73,17 +74,21 @@ public class countdown {
     }
     protected void setTimer(int mins, int secs){
         remainingmillis = ((mins * 60) + secs) * 1000;
-        text.setText("" + String.format("%02d",mins) + ":" + String.format("%02d",secs));
+        printTime(mins,secs);
         active = false;
     }
     public void setTime(int millis){
         remainingmillis = millis;
-        text.setText("" + String.format("%02d",getMins()) + ":" + String.format("%02d",getSecs()));
+        printTime(remainingmillis);
     }
-    public int getMins(){
-        return (int)(remainingmillis / 1000) / 60;
+
+    public void printTime(long millis){
+        text.setText("" + String.format("%02d",(remainingmillis / 60000)) + ":" + String.format("%02d",(remainingmillis / 1000) % 60));
     }
-    public int getSecs(){
-        return (int)(remainingmillis / 1000) % 60;
+    public void printTime(int mins, int secs){
+        text.setText("" + String.format("%02d",mins) + ":" + String.format("%02d",secs));
+    }
+    public void printHint(long millis){
+        text.setHint("" + String.format("%02d",(remainingmillis / 60000)) + ":" + String.format("%02d",(remainingmillis / 1000) % 60));
     }
 }

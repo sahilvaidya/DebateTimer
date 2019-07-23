@@ -70,9 +70,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="188dp"
+        android:elevation="2dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="@+id/AffTimer"
-        app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintStart_toStartOf="@+id/AffTimer"
         app:layout_constraintTop_toTopOf="@+id/AffTimer" />
 
@@ -81,6 +81,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="afftimeleft,AffTimer" />
+
+    <TextView
+        android:id="@+id/negtimeleft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="188dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="@+id/NegTimer"
+        app:layout_constraintStart_toStartOf="@+id/NegTimer"
+        app:layout_constraintTop_toTopOf="@+id/NegTimer"
+        android:elevation="2dp"/>
+
+    <android.support.constraint.Group
+        android:id="@+id/group2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="NegTimer,negtimeleft" />
 
 
 </android.support.constraint.ConstraintLayout>

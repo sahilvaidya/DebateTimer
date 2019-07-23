@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".AffPrep"></activity>
+        <activity android:name=".NegPrep"></activity>
         <activity
             android:name=".HomeScreen"
             android:label="@string/app_name"
