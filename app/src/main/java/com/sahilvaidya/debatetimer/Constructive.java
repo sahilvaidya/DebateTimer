@@ -11,7 +11,7 @@ public class Constructive extends Timer {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        time = 8 * 60000;
+        time = HomeScreen.getTime("Constructive") * 60000;
         super.onCreate(savedInstanceState);
         cd = new countdown(time, butt, text, 8);
     }

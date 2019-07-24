@@ -1,14 +1,17 @@
 package com.sahilvaidya.debatetimer;
 
-/*Random Ideas
-Make the time flash
- */
+/*
+TODO
+    Make the time flash
+    Top banner?
+    Settings
+    Sound
+    Vibrate on finish
+*/
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,20 +23,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class HomeScreen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    //
-//    boolean active;
-//    boolean created;
-//    long totalmillis;
-//    CountDownTimer time;
+
     Button ConstructiveTimer, RebuttalTimer, CXTimer, AffTimer, NegTimer;
     countdown Constructive, Rebuttal, CX;
     String afftime;
     String negtime;
     long affmilis;
     long negmilis;
+
+    static int useValues;
+    final int HIGHSCHOOL_CODE = 0;
+    final int COLLEGE_CODE = 1;
+
+    final String EIGHTMINUTES = "480000";
+    final String TENMINUTES = "600000";
 
     TextView atl,ntl;
     @Override
@@ -51,11 +58,9 @@ public class HomeScreen extends AppCompatActivity
         atl = (TextView) findViewById(R.id.afftimeleft);
         ntl = (TextView) findViewById(R.id.negtimeleft);
 
-        afftime = "480000";
-        affmilis = Long.parseLong(afftime);
+        afftime = EIGHTMINUTES;
 
-        negtime = "480000";
-        negmilis = Long.parseLong(negtime);
+        negtime = EIGHTMINUTES;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -65,8 +70,23 @@ public class HomeScreen extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_hs);
+        android.support.v7.preference.PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+
+
+        SharedPreferences sharedPref = android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean switchPref = sharedPref.getBoolean(SettingsActivity.KEY_PREF_PREP_SWITCH, false);
+        if(switchPref){
+            afftime = negtime = TENMINUTES;
+        }
+        affmilis = Long.parseLong(afftime);
+        negmilis = Long.parseLong(negtime);
+
         atl.setText(printTime(affmilis));
         ntl.setText(printTime(negmilis));
+
+
 
         AffTimer.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -153,6 +173,8 @@ public class HomeScreen extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -165,10 +187,21 @@ public class HomeScreen extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_hs) {
+            useValues = HIGHSCHOOL_CODE;
+            afftime = negtime = EIGHTMINUTES;
+            negmilis = Long.parseLong(negtime);
+            ntl.setText(printTime(negmilis));
+            affmilis = Long.parseLong(afftime);
+            atl.setText(printTime(affmilis));
 
+        } else if (id == R.id.nav_college) {
+            useValues = COLLEGE_CODE;
+            afftime = negtime = TENMINUTES;
+            negmilis = Long.parseLong(negtime);
+            ntl.setText(printTime(negmilis));
+            affmilis = Long.parseLong(afftime);
+            atl.setText(printTime(affmilis));
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -179,4 +212,28 @@ public class HomeScreen extends AppCompatActivity
         return "" + String.format("%02d",(millis / 60000)) + ":" + String.format("%02d",(millis / 1000) % 60);
     }
 
+    public static int getTime(String speech){
+        switch(useValues){
+            case 0:
+                switch(speech){
+                    case "Constructive":
+                        return 8;
+                    case "Rebuttal":
+                        return 5;
+                    case "CX":
+                        return 3;
+                }
+                break;
+            case 1:
+                switch(speech){
+                    case "Constructive":
+                        return 9;
+                    case "Rebuttal":
+                        return 6;
+                    case "CX":
+                        return 3;
+                }
+        }
+        return 5;
+    }
 }
